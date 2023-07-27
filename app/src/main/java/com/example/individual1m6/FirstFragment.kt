@@ -52,40 +52,98 @@ class FirstFragment : Fragment() {
         )
             .build()
 
+
+
         binding.btagregar.setOnClickListener {
-            val newPlayer = Player(
 
-                apodo = binding.textInputLayoutApodo.editText?.text.toString(),
-                nombrecompleto = binding.textInputLayoutNombrecompleto.editText?.text.toString(),
-                edad = binding.textInputLayoutEdad.editText?.text.toString().toInt()
-            )
+            val datosValidos = ingresarDatos()
+
+            if (datosValidos) {
+                val newPlayer = Player(
+
+                    apodo = binding.textInputLayoutApodo.editText?.text.toString(),
+                    nombrecompleto = binding.textInputLayoutNombrecompleto.editText?.text.toString(),
+                    edad = binding.textInputLayoutEdad.editText?.text.toString().toInt()
+
+                )
 
 
 
-            GlobalScope.launch(Dispatchers.IO) {
-                database.getPlayerDao().insertPlayer(newPlayer)
-                Log.d("database", "newPlayer")
-                //val playerlist = database.getPlayerDao().showallplayers()
-                //Log.i("database", ">> " + playerlist.count())
 
+
+                GlobalScope.launch(Dispatchers.IO) {
+                    database.getPlayerDao().insertPlayer(newPlayer)
+                    Log.d("database", "newPlayer")
+                    //val playerlist = database.getPlayerDao().showallplayers()
+                    //Log.i("database", ">> " + playerlist.count())
+
+                }
+
+            } else {
+                Toast.makeText(requireContext(), "Ingrese datos válidos", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+            binding.btmostrar.setOnClickListener {
+                findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
             }
 
-        }
-
-        binding.btmostrar.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }
-
-        /* binding.btborrar.setOnClickListener {
+            /* binding.btborrar.setOnClickListener {
             GlobalScope.launch (Dispatchers.IO){
                 database.getPlayerDao().deletePlayer()
 
             }*/
-    }
+        }
 
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        override fun onDestroyView() {
+            super.onDestroyView()
+            _binding = null
+        }
+
+        fun ingresarDatos(): Boolean {
+
+            var datosValidos=true
+
+            var apodo = binding.textInputLayoutApodo.editText?.text.toString()
+            if (apodo.isNullOrBlank()) {
+                binding.textInputLayoutApodo.editText?.error = "Ingrese un apodo"
+                datosValidos=false
+            } else if (apodo.length > 30) {
+                binding.textInputLayoutApodo.editText?.error =
+                    "Apodo no puede llevar mas de 30 caracteres"
+                datosValidos=false
+            }
+
+            var nombre = binding.textInputLayoutNombrecompleto.editText?.text.toString()
+            if (nombre.isNullOrBlank()) {
+                binding.textInputLayoutNombrecompleto.editText?.error = "Ingrese nombre completo"
+                datosValidos=false
+            } else if (!nombre.matches(Regex("^[a-zA-Z]+\\s[a-zA-Z]+$"))) {
+                binding.textInputLayoutNombrecompleto.editText?.error =
+                    "El nombre solo puede llevar letras"
+                datosValidos=false
+            } else if (nombre.length < 5) {
+                binding.textInputLayoutNombrecompleto.editText?.error =
+                    "El nombre no puede tener menos de 5 caracteres"
+                datosValidos=false
+            }
+
+            var edad = binding.textInputLayoutEdad.editText?.text.toString().toIntOrNull()
+            if (edad==null){
+                binding.textInputLayoutEdad.editText?.error = "Ingrese una edad válida"
+                datosValidos = false
+            }else if (edad < 0 || edad > 150) {
+                binding.textInputLayoutEdad.editText?.error =
+                    "la edad debe ser mayor a 1 y menor a 150"
+                datosValidos=false
+            } //else if (edad.toString().isNullOrBlank()) {
+                //binding.textInputLayoutEdad.editText?.error = "Ingrese una edad"
+            //}
+
+            return datosValidos
+            /*return !(apodo.isNullOrBlank() || apodo.length > 30 ||
+                    nombre.isNullOrBlank() || !nombre.matches(Regex("^[a-zA-Z]+\\s[a-zA-Z]+$")) || nombre.length < 5 ||
+                    edad.toString().isNullOrBlank() || edad < 1 || edad > 150)*/
+        }
     }
-}
