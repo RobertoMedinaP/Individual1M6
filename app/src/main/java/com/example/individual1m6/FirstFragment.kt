@@ -97,7 +97,7 @@ class FirstFragment : Fragment() {
             Log.d("semuestra","********"+semuestra.toString())
             irasegundofragmento()
 
-            //guardo true pero envio false
+
 
         }
     }
@@ -126,7 +126,7 @@ class FirstFragment : Fragment() {
         if (nombre.isNullOrBlank()) {
             binding.textInputLayoutNombrecompleto.editText?.error = "Ingrese nombre completo"
             datosValidos = false
-        } else if (!nombre.matches(Regex("^[a-zA-Z]+\\s[a-zA-Z]+$"))) {
+        } else if (!nombre.matches(Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$"))) {
             binding.textInputLayoutNombrecompleto.editText?.error =
                 "El nombre solo puede llevar letras"
             datosValidos = false

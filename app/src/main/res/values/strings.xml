@@ -12,6 +12,7 @@
     <string name="Apodo">Ingrese su Nickname</string>
     <string name="Nombre">Ingrese su nombre completo</string>
     <string name="Edad">Ingrese su edad</string>
+    <string name="Usuarios">Usuarios registrados</string>
 
 
     <string name="lorem_ipsum">Registrese</string>
