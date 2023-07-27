@@ -6,13 +6,13 @@ import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "tablaJugadores")
-data class Player (
+data class Player(
 
-    //@PrimaryKey(autoGenerate = true)
-    //@NonNull
-    //val idPlayer: Int,
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    val idPlayer: Int=0,
     val apodo: String,
     val nombrecompleto: String,
     val edad: Int
 
-        )
+)

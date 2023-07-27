@@ -1,10 +1,13 @@
 package com.example.individual1m6
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.room.Room
 import com.example.individual1m6.Model.Player
@@ -42,26 +45,44 @@ class FirstFragment : Fragment() {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
 
-        val database= Room.databaseBuilder(
+        val database = Room.databaseBuilder(
             requireContext().applicationContext,
             PlayerDataBase::class.java,
-            "tablaJugadores")
+            "jugadoresDb"
+        )
             .build()
 
         binding.btagregar.setOnClickListener {
             val newPlayer = Player(
-                //TODO hacer las validaciones
+
                 apodo = binding.textInputLayoutApodo.editText?.text.toString(),
                 nombrecompleto = binding.textInputLayoutNombrecompleto.editText?.text.toString(),
-                edad = binding.textInputLayoutEdad.editText?.text.toString().toInt(),
+                edad = binding.textInputLayoutEdad.editText?.text.toString().toInt()
+            )
 
-                )
+
 
             GlobalScope.launch(Dispatchers.IO) {
                 database.getPlayerDao().insertPlayer(newPlayer)
+                Log.d("database", "newPlayer")
+                //val playerlist = database.getPlayerDao().showallplayers()
+                //Log.i("database", ">> " + playerlist.count())
+
             }
+
         }
+
+        binding.btmostrar.setOnClickListener {
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        }
+
+        /* binding.btborrar.setOnClickListener {
+            GlobalScope.launch (Dispatchers.IO){
+                database.getPlayerDao().deletePlayer()
+
+            }*/
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

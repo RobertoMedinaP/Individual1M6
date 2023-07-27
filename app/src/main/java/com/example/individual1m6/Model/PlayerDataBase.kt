@@ -16,6 +16,19 @@ abstract class PlayerDataBase: RoomDatabase () {
         private var INSTANCE: PlayerDataBase? = null
 
         fun getDataBase(context: Context): PlayerDataBase {
+            /*if (INSTANCE == null){
+                synchronized(this) {
+                    INSTANCE = Room.databaseBuilder(
+                        context.applicationContext,
+                        PlayerDataBase::class.java,
+                        "jugadoresDB"
+                    ).build()
+                }
+            }
+
+            return INSTANCE!!
+            */
+
             val tempInstance = INSTANCE
             if (tempInstance != null) {
                 return tempInstance
@@ -24,12 +37,13 @@ abstract class PlayerDataBase: RoomDatabase () {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     PlayerDataBase::class.java,
-                    "tablaJugadores"
+                    "jugadoresDB"
                 ).build()
 
                 INSTANCE = instance
                 return instance
             }
+
         }
     }
 }
