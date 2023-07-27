@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.example.individual1m6.Model.Player
 import com.example.individual1m6.Model.PlayerDataBase
 import com.example.individual1m6.databinding.FragmentSecondBinding
 import com.google.android.material.snackbar.Snackbar
@@ -50,7 +51,9 @@ class SecondFragment : Fragment() {
 
         //se pasa el adapter al rv
         val recyclerView: RecyclerView = binding.rv1
-        val adapter = PlayerAdapter(emptyList())
+        val adapter = PlayerAdapter(emptyList()){
+            player ->  eliminarJugador(player)
+        }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
@@ -80,5 +83,19 @@ class SecondFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun eliminarJugador(player: Player) {
+        GlobalScope.launch(Dispatchers.IO) {
+            val database = Room.databaseBuilder(
+                requireContext().applicationContext,
+                PlayerDataBase::class.java,
+                "jugadoresDb"
+            ).build()
+
+            database.getPlayerDao().deletePlayer(player)
+        }
+
+        Snackbar.make(requireView(), "Jugador eliminado", Snackbar.LENGTH_SHORT).show()
     }
 }

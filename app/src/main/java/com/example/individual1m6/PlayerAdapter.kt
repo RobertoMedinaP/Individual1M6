@@ -1,12 +1,13 @@
 package com.example.individual1m6
 
 import android.view.LayoutInflater
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.individual1m6.Model.Player
 import com.example.individual1m6.databinding.PlayerListBinding
 
-class PlayerAdapter(private var dataset: List<Player>): RecyclerView.Adapter<PlayerAdapter.AdapterViewHolder>() {
+class PlayerAdapter(private var dataset: List<Player>, private val clickListener: (Player)->Unit): RecyclerView.Adapter<PlayerAdapter.AdapterViewHolder>() {
 
     class AdapterViewHolder(private val binding: PlayerListBinding):RecyclerView.ViewHolder(binding.root){
 
@@ -32,6 +33,10 @@ class PlayerAdapter(private var dataset: List<Player>): RecyclerView.Adapter<Pla
     override fun onBindViewHolder(holder: AdapterViewHolder, position: Int) {
         val currentPlayer=dataset[position]
         holder.bind(currentPlayer)
+
+        holder.itemView.setOnClickListener {
+            clickListener(currentPlayer)
+        }
 
         }
 
