@@ -27,6 +27,7 @@ class FirstFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private var semuestra: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,66 +85,78 @@ class FirstFragment : Fragment() {
             }
         }
 
-            binding.btmostrar.setOnClickListener {
-                findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-            }
-
-            /* binding.btborrar.setOnClickListener {
-            GlobalScope.launch (Dispatchers.IO){
-                database.getPlayerDao().deletePlayer()
-
-            }*/
+        binding.btmostrar.setOnClickListener {
+             semuestra = false
+            irasegundofragmento()
+            Log.d("semuestra", semuestra.toString())
         }
 
+        binding.btborrar.setOnClickListener {
 
-        override fun onDestroyView() {
-            super.onDestroyView()
-            _binding = null
-        }
+            semuestra = true
+            Log.d("semuestra","********"+semuestra.toString())
+            irasegundofragmento()
 
-        fun ingresarDatos(): Boolean {
+            //guardo true pero envio false
 
-            var datosValidos=true
-
-            var apodo = binding.textInputLayoutApodo.editText?.text.toString()
-            if (apodo.isNullOrBlank()) {
-                binding.textInputLayoutApodo.editText?.error = "Ingrese un apodo"
-                datosValidos=false
-            } else if (apodo.length > 30) {
-                binding.textInputLayoutApodo.editText?.error =
-                    "Apodo no puede llevar mas de 30 caracteres"
-                datosValidos=false
-            }
-
-            var nombre = binding.textInputLayoutNombrecompleto.editText?.text.toString()
-            if (nombre.isNullOrBlank()) {
-                binding.textInputLayoutNombrecompleto.editText?.error = "Ingrese nombre completo"
-                datosValidos=false
-            } else if (!nombre.matches(Regex("^[a-zA-Z]+\\s[a-zA-Z]+$"))) {
-                binding.textInputLayoutNombrecompleto.editText?.error =
-                    "El nombre solo puede llevar letras"
-                datosValidos=false
-            } else if (nombre.length < 5) {
-                binding.textInputLayoutNombrecompleto.editText?.error =
-                    "El nombre no puede tener menos de 5 caracteres"
-                datosValidos=false
-            }
-
-            var edad = binding.textInputLayoutEdad.editText?.text.toString().toIntOrNull()
-            if (edad==null){
-                binding.textInputLayoutEdad.editText?.error = "Ingrese una edad válida"
-                datosValidos = false
-            }else if (edad < 0 || edad > 150) {
-                binding.textInputLayoutEdad.editText?.error =
-                    "la edad debe ser mayor a 1 y menor a 150"
-                datosValidos=false
-            } //else if (edad.toString().isNullOrBlank()) {
-                //binding.textInputLayoutEdad.editText?.error = "Ingrese una edad"
-            //}
-
-            return datosValidos
-            /*return !(apodo.isNullOrBlank() || apodo.length > 30 ||
-                    nombre.isNullOrBlank() || !nombre.matches(Regex("^[a-zA-Z]+\\s[a-zA-Z]+$")) || nombre.length < 5 ||
-                    edad.toString().isNullOrBlank() || edad < 1 || edad > 150)*/
         }
     }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    fun ingresarDatos(): Boolean {
+
+        var datosValidos = true
+
+        var apodo = binding.textInputLayoutApodo.editText?.text.toString()
+        if (apodo.isNullOrBlank()) {
+            binding.textInputLayoutApodo.editText?.error = "Ingrese un apodo"
+            datosValidos = false
+        } else if (apodo.length > 30) {
+            binding.textInputLayoutApodo.editText?.error =
+                "Apodo no puede llevar mas de 30 caracteres"
+            datosValidos = false
+        }
+
+        var nombre = binding.textInputLayoutNombrecompleto.editText?.text.toString()
+        if (nombre.isNullOrBlank()) {
+            binding.textInputLayoutNombrecompleto.editText?.error = "Ingrese nombre completo"
+            datosValidos = false
+        } else if (!nombre.matches(Regex("^[a-zA-Z]+\\s[a-zA-Z]+$"))) {
+            binding.textInputLayoutNombrecompleto.editText?.error =
+                "El nombre solo puede llevar letras"
+            datosValidos = false
+        } else if (nombre.length < 5) {
+            binding.textInputLayoutNombrecompleto.editText?.error =
+                "El nombre no puede tener menos de 5 caracteres"
+            datosValidos = false
+        }
+
+        var edad = binding.textInputLayoutEdad.editText?.text.toString().toIntOrNull()
+        if (edad == null) {
+            binding.textInputLayoutEdad.editText?.error = "Ingrese una edad válida"
+            datosValidos = false
+        } else if (edad < 0 || edad > 150) {
+            binding.textInputLayoutEdad.editText?.error =
+                "la edad debe ser mayor a 1 y menor a 150"
+            datosValidos = false
+        } //else if (edad.toString().isNullOrBlank()) {
+        //binding.textInputLayoutEdad.editText?.error = "Ingrese una edad"
+        //}
+
+        return datosValidos
+        /*return !(apodo.isNullOrBlank() || apodo.length > 30 ||
+                    nombre.isNullOrBlank() || !nombre.matches(Regex("^[a-zA-Z]+\\s[a-zA-Z]+$")) || nombre.length < 5 ||
+                    edad.toString().isNullOrBlank() || edad < 1 || edad > 150)*/
+    }
+
+    fun irasegundofragmento() {
+        val bundle = Bundle()
+        bundle.putBoolean("semuestra", semuestra)
+        findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment, bundle)
+    }
+}

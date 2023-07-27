@@ -38,6 +38,7 @@ class SecondFragment : Fragment() {
     ): View? {
 
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
+
         return binding.root
 
     }
@@ -45,14 +46,20 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //recibo el bundle
+        val semuestra = arguments?.getBoolean("semuestra")?:false
+        Log.d("semuestra","SEGUNDO FRAG RECIBE"+ semuestra.toString())
+
         binding.buttonSecond.setOnClickListener {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
         }
 
-        //se pasa el adapter al rv
+        //se pasa el adapter al rv, le paso la booleana
         val recyclerView: RecyclerView = binding.rv1
-        val adapter = PlayerAdapter(emptyList()){
-            player ->  eliminarJugador(player)
+        val adapter = semuestra?.let {
+            PlayerAdapter(emptyList(), it){
+                player ->  eliminarJugador(player)
+            }
         }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
@@ -74,7 +81,7 @@ class SecondFragment : Fragment() {
             Log.i("database", ">> " + playerlist.count())
             //se actualiza la vista del recycler con los datos obtenidos de la bd
             withContext(Dispatchers.Main) {
-                adapter.updateData(playerlist)
+                adapter?.updateData(playerlist)
             }
         }
 
