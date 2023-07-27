@@ -9,7 +9,10 @@
     <string name="add">Agregar</string>
     <string name="delete">Borrar</string>
     <string name="ShowAll">Mostrar todos</string>
+    <string name="Apodo">Ingrese su Nickname</string>
+    <string name="Nombre">Ingrese su nombre completo</string>
+    <string name="Edad">Ingrese su edad</string>
 
 
-    <string name="lorem_ipsum">Lorem ipsum</string>
+    <string name="lorem_ipsum">Registrese</string>
 </resources>
